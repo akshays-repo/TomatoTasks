@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus/ThemeManager.dart';
 import 'package:focus/features/sessions/session.dart';
+import 'package:focus/features/todo/todo.dart';
 import 'package:provider/provider.dart';
 
 
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 void main() {
   return runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => new ThemeNotifier(),
-    child: TomatoTasks(),
+    child: const TomatoTasks(),
   ));
 }
 
@@ -53,7 +54,7 @@ class _TomatoTasksState extends State<TomatoTasks> {
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,
                           fontSize: 14),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -67,27 +68,37 @@ class _TomatoTasksState extends State<TomatoTasks> {
                   isLightMode ? theme.setDarkMode() : theme.setLightMode();
                 },
               ),
-              // IconButton(
-              //   icon: const Icon(Icons.code),
-              //   onPressed: () {
-              //     print('Settings button is pressed');
-              //   },
-              // ),
             ],
           ),
-          body: const SingleChildScrollView(
+          body: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Session(),
-
-                // Todo()
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: Session(),
+                      )), // Added Expanded for layout constraint
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: TodoApp(),
+                      )), // Added Expanded for layout constraint
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
       );
+
     });
   }
 }

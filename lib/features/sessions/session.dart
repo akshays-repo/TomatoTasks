@@ -255,255 +255,233 @@ class _SessionState extends State<Session> {
       final isLightMode = theme.getMode() == 'light';
 
 
-      return Container(
-        // width: MediaQuery.of(context).size.width * 0.5,
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-            color:
-                isLightMode ? const Color(0xFFFAFAFA) : const Color(0xFF18181B),
-            border: Border.all(
-              color: const Color(0xFFE4E4E7), // Border color
-              width: 1.0, // Border width
-            ),
-            borderRadius: BorderRadius.circular(15.0)),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Mode',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w500),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '$currentSessionType',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: countDownRingColor),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(sessionIcon, color: countDownRingColor, size: 20)
-                  ],
-                ),
-              ],
-            ),
-            const Divider(
-              color: Color(0xFFE4E4E7),
-              thickness: 1.0,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Countdown(
-                  controller: _controller,
-                  seconds: counterTimeDuration,
-                  build: (BuildContext context, double time) =>
-                      new CircularPercentIndicator(
-                    radius: (MediaQuery.of(context).size.width * 0.2) / 2,
-                    animation: false,
-                    animationDuration: 0,
-                    lineWidth: 15.0,
-                    percent: 1.0 - time / counterTimeDuration,
-                    center: Text(
-                      timeToDisplay(time.toInt()),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 64.0),
-                    ),
-                    circularStrokeCap: CircularStrokeCap.butt,
-                    backgroundColor: const Color(0xFFF4F4F5),
-                    progressColor: countDownRingColor,
+      return SingleChildScrollView(
+        child: Container(
+          // width: MediaQuery.of(context).size.width * 0.5,
+          padding: const EdgeInsets.all(12.0),
+          decoration: BoxDecoration(
+              color: isLightMode
+                  ? const Color(0xFFFAFAFA)
+                  : const Color(0xFF18181B),
+              border: Border.all(
+                color: const Color(0xFFE4E4E7), // Border color
+                width: 1.0, // Border width
+              ),
+              borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Mode',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w500),
                   ),
-                  interval: const Duration(seconds: 1),
-                  onFinished: handleOnFinished,
-                ),
-
-                // Session type
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 0.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Row(
                     children: [
-                      Opacity(
-                        opacity: !isSessionButtonEnabled(isFocus)
-                            ? disabledButtonOpacity
-                            : 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton.icon(
-                            style: ButtonStyle(
-                              side: WidgetStateProperty.all<BorderSide>(
-                                const BorderSide(
-                                  color: Color(0xFF84CC16),
-                                  width: 1.0,
-                                ),
-                              ),
-                              backgroundColor: WidgetStateProperty.all<Color>(
-                                const Color.fromARGB(17, 131, 204, 22),
-                              ),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                              ),
-                            ),
-                            onPressed: isSessionButtonEnabled(isFocus)
-                                ? () {
-                                    changeSessionType(SessionType.focus);
-                                  }
-                                : null,
-                            label: Text(
-                              'Focus : ${timeToDisplay(focusTime.toInt())} min',
-                              style: const TextStyle(
-                                  color: focusColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            icon: const Icon(
-                              Icons.center_focus_strong_outlined,
-                              color: focusColor,
-                              size: 12,
-                            ),
-                          ),
-                        ),
+                      Text(
+                        '$currentSessionType',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: countDownRingColor),
                       ),
-                      Opacity(
-                        opacity: !isSessionButtonEnabled(isShortBreak)
-                            ? disabledButtonOpacity
-                            : 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton.icon(
-                            style: ButtonStyle(
-                              side: WidgetStateProperty.all<BorderSide>(
-                                const BorderSide(
-                                  color: shortBreakColor,
-                                  width: 1.0,
-                                ),
-                              ),
-                              backgroundColor: WidgetStateProperty.all<Color>(
-                                const Color.fromRGBO(245, 159, 11, 0.103),
-                              ),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                              ),
-                            ),
-                            onPressed: isSessionButtonEnabled(isShortBreak)
-                                ? () {
-                                    changeSessionType(SessionType.shortBreak);
-                                  }
-                                : null,
-                            label: Text(
-                              'Short Break :  ${timeToDisplay(shortBreakTime.toInt())} min',
-                              style: const TextStyle(
-                                  color: shortBreakColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            icon: const Icon(
-                              Icons.coffee_maker_outlined,
-                              color: shortBreakColor,
-                              size: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Opacity(
-                        opacity: !isSessionButtonEnabled(isLongBreak)
-                            ? disabledButtonOpacity
-                            : 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton.icon(
-                            style: ButtonStyle(
-                              side: WidgetStateProperty.all<BorderSide>(
-                                const BorderSide(
-                                  color: longBreakColor,
-                                  width: 1.0,
-                                ),
-                              ),
-                              backgroundColor: WidgetStateProperty.all<Color>(
-                                const Color.fromRGBO(6, 181, 212, 0.103),
-                              ),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                              ),
-                            ),
-                            onPressed: isSessionButtonEnabled(isLongBreak)
-                                ? () {
-                                    changeSessionType(SessionType.longBreak);
-                                  }
-                                : null,
-                            label: Text(
-                              'Long Break :  ${timeToDisplay(longBreakTime.toInt())} min',
-                              style: const TextStyle(
-                                  color: longBreakColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            icon: const Icon(
-                              Icons.gamepad_outlined,
-                              color: longBreakColor,
-                              size: 12,
-                            ),
-                          ),
-                        ),
-                      ),
+                      SizedBox(width: 8),
+                      Icon(sessionIcon, color: countDownRingColor, size: 20)
                     ],
                   ),
-                ),
+                ],
+              ),
+              const Divider(
+                color: Color(0xFFE4E4E7),
+                thickness: 1.0,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Countdown(
+                    controller: _controller,
+                    seconds: counterTimeDuration,
+                    build: (BuildContext context, double time) =>
+                        new CircularPercentIndicator(
+                      radius: (MediaQuery.of(context).size.height * 0.3) / 2,
+                      animation: false,
+                      animationDuration: 0,
+                      lineWidth: 15.0,
+                      percent: 1.0 - time / counterTimeDuration,
+                      center: Text(
+                        timeToDisplay(time.toInt()),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 44.0),
+                      ),
+                      circularStrokeCap: CircularStrokeCap.butt,
+                      backgroundColor: const Color(0xFFF4F4F5),
+                      progressColor: countDownRingColor,
+                    ),
+                    interval: const Duration(seconds: 1),
+                    onFinished: handleOnFinished,
+                  ),
 
-                // Play, Pause, and reset buttons
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 0.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        tooltip: 'Settings',
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                            isLightMode
-                                ? const Color(0xFFF4F4F5)
-                                : const Color(0xFF52525B),
-                          ),
-                          shape:
-                              WidgetStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                  // Session type
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Opacity(
+                          opacity: !isSessionButtonEnabled(isFocus)
+                              ? disabledButtonOpacity
+                              : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton.icon(
+                              style: ButtonStyle(
+                                side: WidgetStateProperty.all<BorderSide>(
+                                  const BorderSide(
+                                    color: Color(0xFF84CC16),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                  const Color.fromARGB(17, 131, 204, 22),
+                                ),
+                                shape: WidgetStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                ),
+                              ),
+                              onPressed: isSessionButtonEnabled(isFocus)
+                                  ? () {
+                                      changeSessionType(SessionType.focus);
+                                    }
+                                  : null,
+                              label: Text(
+                                'Focus : ${timeToDisplay(focusTime.toInt())} min',
+                                style: const TextStyle(
+                                    color: focusColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              icon: const Icon(
+                                Icons.center_focus_strong_outlined,
+                                color: focusColor,
+                                size: 12,
+                              ),
                             ),
                           ),
                         ),
-                        icon: Icon(
-                          Icons.settings,
-                          color: isLightMode ? Colors.black12 : Colors.white38,
+                        Opacity(
+                          opacity: !isSessionButtonEnabled(isShortBreak)
+                              ? disabledButtonOpacity
+                              : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton.icon(
+                              style: ButtonStyle(
+                                side: WidgetStateProperty.all<BorderSide>(
+                                  const BorderSide(
+                                    color: shortBreakColor,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                  const Color.fromRGBO(245, 159, 11, 0.103),
+                                ),
+                                shape: WidgetStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                ),
+                              ),
+                              onPressed: isSessionButtonEnabled(isShortBreak)
+                                  ? () {
+                                      changeSessionType(SessionType.shortBreak);
+                                    }
+                                  : null,
+                              label: Text(
+                                'Short Break :  ${timeToDisplay(shortBreakTime.toInt())} min',
+                                style: const TextStyle(
+                                    color: shortBreakColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              icon: const Icon(
+                                Icons.coffee_maker_outlined,
+                                color: shortBreakColor,
+                                size: 12,
+                              ),
+                            ),
+                          ),
                         ),
-                        onPressed:
-                            isPlaying ? null : () => _dialogBuilder(context),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: IconButton(
-                          tooltip: isPlaying ? 'Pause' : 'Play',
+                        Opacity(
+                          opacity: !isSessionButtonEnabled(isLongBreak)
+                              ? disabledButtonOpacity
+                              : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton.icon(
+                              style: ButtonStyle(
+                                side: WidgetStateProperty.all<BorderSide>(
+                                  const BorderSide(
+                                    color: longBreakColor,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                  const Color.fromRGBO(6, 181, 212, 0.103),
+                                ),
+                                shape: WidgetStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                ),
+                              ),
+                              onPressed: isSessionButtonEnabled(isLongBreak)
+                                  ? () {
+                                      changeSessionType(SessionType.longBreak);
+                                    }
+                                  : null,
+                              label: Text(
+                                'Long Break :  ${timeToDisplay(longBreakTime.toInt())} min',
+                                style: const TextStyle(
+                                    color: longBreakColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              icon: const Icon(
+                                Icons.gamepad_outlined,
+                                color: longBreakColor,
+                                size: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Play, Pause, and reset buttons
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          tooltip: 'Settings',
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(
                               isLightMode
@@ -518,48 +496,74 @@ class _SessionState extends State<Session> {
                             ),
                           ),
                           icon: Icon(
-                            isPlaying
-                                ? Icons.pause_circle_filled_outlined
-                                : Icons.play_arrow_outlined,
-                            color: countDownRingColor,
-                            size: 44,
-                          ),
-                          onPressed: () {
-                            if (isPlaying) {
-                              pauseTimer();
-                            } else {
-                              startTimer();
-                            }
-                          },
-                        ),
-                      ),
-                      IconButton(
-                          tooltip: 'Reset',
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(
-                              isLightMode
-                                  ? const Color(0xFFF4F4F5)
-                                  : const Color(0xFF52525B),
-                            ),
-                            shape:
-                                WidgetStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                          icon: Icon(
-                            Icons.restore,
+                            Icons.settings,
                             color:
                                 isLightMode ? Colors.black12 : Colors.white38,
                           ),
-                          onPressed: resetTimer),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
+                          onPressed:
+                              isPlaying ? null : () => _dialogBuilder(context),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: IconButton(
+                            tooltip: isPlaying ? 'Pause' : 'Play',
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                isLightMode
+                                    ? const Color(0xFFF4F4F5)
+                                    : const Color(0xFF52525B),
+                              ),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                            icon: Icon(
+                              isPlaying
+                                  ? Icons.pause_circle_filled_outlined
+                                  : Icons.play_arrow_outlined,
+                              color: countDownRingColor,
+                              size: 44,
+                            ),
+                            onPressed: () {
+                              if (isPlaying) {
+                                pauseTimer();
+                              } else {
+                                startTimer();
+                              }
+                            },
+                          ),
+                        ),
+                        IconButton(
+                            tooltip: 'Reset',
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                isLightMode
+                                    ? const Color(0xFFF4F4F5)
+                                    : const Color(0xFF52525B),
+                              ),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.restore,
+                              color:
+                                  isLightMode ? Colors.black12 : Colors.white38,
+                            ),
+                            onPressed: resetTimer),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
