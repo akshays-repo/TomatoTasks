@@ -44,7 +44,7 @@ class OnboardingScreen extends StatelessWidget {
                 // network image
                 Center(
                   child: Image(
-                    image: AssetImage('/images/pomodoro.png'),
+                    image: AssetImage('assets/images/pomodoro.png'),
                     fit: BoxFit.fitHeight,
                     height: MediaQuery.of(context).size.height * 0.8,
                   ),
@@ -135,7 +135,7 @@ class _TomatoTasksState extends State<TomatoTasks> {
               appBar: AppBar(
                 title: const Row(
                   children: [
-                    Image(image: AssetImage('icons/icon.png')),
+                    Image(image: AssetImage('assets/icons/icon.png')),
                     SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
