@@ -4,8 +4,8 @@ import 'package:focus/StorageManager.dart';
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
     primaryColor: const Color(0xFF84CC16),
-
     brightness: Brightness.dark,
+    iconTheme: const IconThemeData(color: Color(0xFF84CC16)),
 
   );
 
@@ -16,7 +16,9 @@ class ThemeNotifier with ChangeNotifier {
       backgroundColor: Colors.white,
     ),
       textTheme:
-          const TextTheme(bodyMedium: TextStyle(color: Color(0xFF71717A)))
+          const TextTheme(bodyMedium: TextStyle(color: Color(0xFF71717A))),
+    iconTheme: const IconThemeData(color: Color(0xFF84CC16)),
+
   );
 
   late ThemeData _themeData = lightTheme;

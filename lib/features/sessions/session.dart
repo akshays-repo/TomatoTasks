@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus/ThemeManager.dart';
 import 'package:focus/features/sessions/utils.dart';
+import 'package:focus/main.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -263,10 +264,12 @@ class _SessionState extends State<Session> {
               color: isLightMode
                   ? const Color(0xFFFAFAFA)
                   : const Color(0xFF18181B),
-              border: Border.all(
+              border: isLargerDevice(context)
+                  ? Border.all(
                 color: const Color(0xFFE4E4E7), // Border color
                 width: 1.0, // Border width
-              ),
+                    )
+                  : null,
               borderRadius: BorderRadius.circular(15.0)),
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -332,9 +335,11 @@ class _SessionState extends State<Session> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 16.0, horizontal: 0.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      direction: Axis.horizontal,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Opacity(
                           opacity: !isSessionButtonEnabled(isFocus)
