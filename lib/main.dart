@@ -133,6 +133,7 @@ class _TomatoTasksState extends State<TomatoTasks> {
             // Show the main app screen
             return Scaffold(
               appBar: AppBar(
+                backgroundColor: isLightMode ? Colors.white : Colors.black,
                 title: const Row(
                   children: [
                     Image(image: AssetImage('assets/icons/icon.png')),
@@ -194,6 +195,9 @@ class _TomatoTasksState extends State<TomatoTasks> {
 
               bottomNavigationBar: !isLargerDevice(context)
                   ? BottomNavigationBar(
+                      backgroundColor:
+                          isLightMode ? Colors.white : Colors.black,
+
                       currentIndex: _selectedIndex,
                       onTap: _onItemTapped,
                       items: const [
