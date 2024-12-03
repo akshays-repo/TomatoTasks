@@ -45,7 +45,7 @@ class OnboardingScreen extends StatelessWidget {
                 Center(
                   child: Image(
                     image: AssetImage('assets/images/pomodoro.png'),
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.fitWidth,
                     height: MediaQuery.of(context).size.height * 0.8,
                   ),
                 ),
@@ -53,10 +53,7 @@ class OnboardingScreen extends StatelessWidget {
                 OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(
-                      const Color(0xFF84CC16),
-                    ),
-                    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                      Colors.white,
                     ),
                   ),
                   onPressed: () async {
@@ -69,7 +66,7 @@ class OnboardingScreen extends StatelessWidget {
                   child: const Text(
                     'Get Started',
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.w900,
                         fontSize: 18),
                   ),
